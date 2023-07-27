@@ -1,4 +1,4 @@
-package guru.bonacci.performance;
+package guru.bonacci.reactive;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Output {
+public class Input {
 	
 	private String foo;
 	private Integer goo;
 	private Double bar;
 	private Boolean baz;
-	private Long when;
 }
