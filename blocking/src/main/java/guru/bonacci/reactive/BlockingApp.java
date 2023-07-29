@@ -8,31 +8,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import guru.bonacci.reactive.kafka.JsonProducer;
 import guru.bonacci.reactive.kafka.Output;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Flux;
 
-@Slf4j
 @RestController
 @SpringBootApplication
 @RequiredArgsConstructor
-public class ReactiveApp {
+public class BlockingApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ReactiveApp.class, args);
+		SpringApplication.run(BlockingApp.class, args);
 	}
 
 	
 	private final JsonProducer kafkaClient;
 	
-	 @PostMapping("/json/tx")
-   public Flux<String> postTxRequest(@RequestBody Input in) throws InterruptedException {
-		 return kafkaClient.sendTxMessage(Output.from(in));
-   }
-	 
-	 @PostMapping("/json")
-   public Flux<String> postRequest(@RequestBody Input in) throws InterruptedException {
-		 return kafkaClient.sendMessage(Output.from(in));
-   }
-
+	@PostMapping("/json")
+	public String postRequest(@RequestBody @Valid Input in) {
+		return kafkaClient.sendMessage(Output.from(in));
+	}
 }

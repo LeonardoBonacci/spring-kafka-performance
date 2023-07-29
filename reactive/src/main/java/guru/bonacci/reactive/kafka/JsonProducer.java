@@ -10,6 +10,7 @@ import org.apache.kafka.common.Uuid;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.stereotype.Component;
 
+import guru.bonacci.reactive.Input;
 import io.confluent.kafka.serializers.KafkaJsonSerializer;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -44,6 +45,8 @@ public class JsonProducer implements Closeable {
       Map<String, Object> props = new HashMap<>();
       props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
       props.put(ProducerConfig.CLIENT_ID_CONFIG, "reactive-json-producer-"+Uuid.randomUuid().toString().substring(0, 5));
+      props.put(ProducerConfig.ACKS_CONFIG, "all");
+      props.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);  
       props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
       props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSerializer.class);
       SenderOptions<String, Output> senderOptions = SenderOptions.create(props);
@@ -51,8 +54,8 @@ public class JsonProducer implements Closeable {
       sender = KafkaSender.create(senderOptions);
     }
 
-    public Flux<String> sendTxMessage(Output... out) {
-        Flux<Output> srcFlux = Flux.just(out);
+    public Flux<String> sendTxMessage(Input... ins) {
+    	  Flux<Output> srcFlux = Flux.just(ins).map(Output::from);
         return txSender.<String>
                  sendTransactionally(srcFlux.map(p -> kafkaRecord(p, TOPIC_TX)))
                 .concatMap(r -> r)
@@ -67,8 +70,8 @@ public class JsonProducer implements Closeable {
     }
     
     
-    public Flux<String> sendMessage(Output... out) {
-       return sender.<String>send(Flux.just(out)
+    public Flux<String> sendMessages(Input... ins) {
+       return sender.<String>send(Flux.just(ins).map(Output::from)
       		 								.map(output -> SenderRecord.create(new ProducerRecord<>(TOPIC, output.getId(), output), 
 		 																		 output.getId())))
       		 		.doOnError(e -> log.error("Send failed", e))

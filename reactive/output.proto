@@ -1,0 +1,12 @@
+package protobuf;
+
+option java_package = "guru.bonacci.reactive.kafka";
+option java_outer_classname = "ProtoOutput";
+
+message Output {
+    required string id = 1;
+    required string foo = 2;
+    required int32 goo = 3;
+    required double bar = 4;
+    required bool baz = 5;
+}

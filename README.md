@@ -1,10 +1,28 @@
 # spring-kafka-performance
 
 ```
+protoc -I=. --java_out=. output.proto
+cp guru/bonacci/reactive/kafka/ProtoOutput.java src/main/java/guru/bonacci/reactive/kafka
+
+
+curl -X POST -H 'Content-Type: application/json' -d '{"foo":"data", "goo":123, "bar":34.21, "baz": true}' localhost:8080/json
+
 ./bin/kafka-console-consumer \
     --bootstrap-server localhost:9092 \
     --topic json-topic \
     --property print.key=true \
+    --property print.value=true
+
+./bin/kafka-avro-console-consumer \
+    --bootstrap-server localhost:9092 \
+    --topic avro-topic \
+    --property schema.registry.url="http://localhost:8081" \
+    --property print.value=true
+
+./bin/kafka-protobuf-console-consumer \
+    --bootstrap-server localhost:9092 \
+    --topic protobuf-topic \
+    --property schema.registry.url="http://localhost:8081" \
     --property print.value=true
 
 ./bin/kafka-console-consumer \

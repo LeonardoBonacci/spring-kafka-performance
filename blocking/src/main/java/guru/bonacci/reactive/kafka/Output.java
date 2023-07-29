@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Data
 @Builder
 @NoArgsConstructor
@@ -23,9 +21,7 @@ public class Output {
 	private Boolean baz;
 	
 	public static Output from(Input in) {
-		 var id = Uuid.randomUuid().toString();
-		 log.info(id);
-
+		var id = Uuid.randomUuid().toString();
 		return Output.builder()
 						.id(id)
 						.foo(in.getFoo())
