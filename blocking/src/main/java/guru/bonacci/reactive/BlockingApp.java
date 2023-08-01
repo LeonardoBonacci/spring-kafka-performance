@@ -1,5 +1,7 @@
 package guru.bonacci.reactive;
 
+import java.util.concurrent.ExecutionException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,5 +28,10 @@ public class BlockingApp {
 	@PostMapping("/json")
 	public String postRequest(@RequestBody @Valid Input in) {
 		return kafkaClient.sendMessage(Output.from(in));
+	}
+	
+	@PostMapping("/block")
+	public String postRequestBlock(@RequestBody @Valid Input in) throws InterruptedException, ExecutionException {
+		return kafkaClient.sendAndWaitMessage(Output.from(in));
 	}
 }

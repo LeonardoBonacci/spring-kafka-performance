@@ -11,7 +11,11 @@ curl -X POST -H 'Content-Type: application/json' -d '{"foo":"data", "goo":123, "
 
 ### blocking json
 
-![Blocking](images/blocking.png)
+![Blocking](images/block.png)
+
+### fire and forget json
+
+![Blocking](images/fire-and-forget.png)
 
 ### reactive json
 
