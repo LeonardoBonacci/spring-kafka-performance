@@ -1,12 +1,32 @@
-# spring-kafka-performance
+# spring kafka
 
 ```
 protoc -I=. --java_out=. output.proto
 cp guru/bonacci/reactive/kafka/ProtoOutput.java src/main/java/guru/bonacci/reactive/kafka
 
-
 curl -X POST -H 'Content-Type: application/json' -d '{"foo":"data", "goo":123, "bar":34.21, "baz": true}' localhost:8080/json
+```
 
+## performance
+
+### blocking json
+
+![Blocking](images/blocking.png)
+
+### reactive json
+
+![Json](images/json.png)
+
+### reactive avro
+
+![Avro](images/avro.png)
+
+## reactive protobuf
+
+![Avro](images/proto.png)
+
+
+```
 ./bin/kafka-console-consumer \
     --bootstrap-server localhost:9092 \
     --topic json-topic \
@@ -40,8 +60,9 @@ curl -X POST -H 'Content-Type: application/json' -d '{"foo":"data", "goo":123, "
     --isolation-level=read_committed
 ```
 
-```
+---
 
+```
 java.lang.IllegalStateException: TransactionalId reactive-json-tx-zT8NV: Invalid transition attempted from state READY to state ABORTING_TRANSACTION
 	at org.apache.kafka.clients.producer.internals.TransactionManager.transitionTo(TransactionManager.java:974) ~[kafka-clients-3.4.1.jar:na]
 	at org.apache.kafka.clients.producer.internals.TransactionManager.transitionTo(TransactionManager.java:967) ~[kafka-clients-3.4.1.jar:na]
