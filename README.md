@@ -21,7 +21,7 @@ curl -X POST -H 'Content-Type: application/json' -d '{"foo":"data", "goo":123, "
 
 ![Avro](images/avro.png)
 
-## reactive protobuf
+### reactive protobuf
 
 ![Avro](images/proto.png)
 
