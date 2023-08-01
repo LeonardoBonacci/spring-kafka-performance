@@ -19,11 +19,11 @@ curl -X POST -H 'Content-Type: application/json' -d '{"foo":"data", "goo":123, "
 
 ### reactive json
 
-![Json](images/json.png)
+![Json](images/json2.png)
 
 ### reactive avro
 
-![Avro](images/avro.png)
+![Avro](images/avro2.png)
 
 ### reactive protobuf
 
